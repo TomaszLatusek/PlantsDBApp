@@ -46,7 +46,7 @@ export default {
           if (response.data >= 0) {
             console.log(`Welcome ${this.usernameValue}`);
             this.$router.push({
-              name: "profile",
+              name: "tasks",
               params: { userId: response.data },
             });
           } else {

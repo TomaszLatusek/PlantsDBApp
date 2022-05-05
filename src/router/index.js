@@ -1,7 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import About from '../views/AboutView.vue';
 import Login from '../views/Login.vue';
-import Profile from '../views/Profile.vue';
 import Tasks from '../views/Tasks.vue';
 import Account from '../views/Account.vue';
 import Plants from '../views/Plants.vue';
@@ -16,12 +15,6 @@ const routes = [
     path: '/',
     name: 'login',
     component: Login,
-  },
-  {
-    path: '/profile',
-    name: 'profile',
-    component: Profile,
-    props: true,
   },
   {
     path: '/tasks',
