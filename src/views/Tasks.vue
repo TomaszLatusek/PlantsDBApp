@@ -1,10 +1,9 @@
 <template>
   <div class="tasksWrapper">
     <SidebarMenu />
-    {{ userId }}
     <table id="availableTasks">
       <tr class="titleRow">
-        <td colspan="5">Available tasks</td>
+        <td colspan="6">Available tasks</td>
       </tr>
       <tr id="headers">
         <th>Palet number</th>
@@ -12,18 +11,22 @@
         <th>Activity</th>
         <th>Due</th>
         <th>Priority</th>
+        <th>Take task</th>
       </tr>
-      <tr v-for="task in todo" :key="task.dateOfPlanting">
+      <tr v-for="task in availableTasks" :key="task.dateOfPlanting">
         <td>{{ task.paletNumber }}</td>
         <td>{{ task.paletPlantsTypeName || "not specified" }}</td>
         <td>{{ task.typeOfCareName }}</td>
         <td>{{ task.timeOfCare }}</td>
         <td>{{ task.priorityNumber }}</td>
+        <td>
+          <input type="checkbox" name="takeTask" @click="takeTask(task)" />
+        </td>
       </tr>
     </table>
     <table id="takenTasks">
       <tr class="titleRow">
-        <td colspan="5">Taken tasks</td>
+        <td colspan="6">Taken tasks</td>
       </tr>
       <tr id="headers">
         <th>Palet number</th>
@@ -31,32 +34,34 @@
         <th>Activity</th>
         <th>Due</th>
         <th>Priority</th>
+        <th>Finish task</th>
       </tr>
-      <tr v-for="task in results" :key="task.dateOfPlanting">
+      <tr v-for="task in takenTasks" :key="task.dateOfPlanting">
         <td>{{ task.paletNumber }}</td>
         <td>{{ task.paletPlantsTypeName || "not specified" }}</td>
         <td>{{ task.typeOfCareName }}</td>
         <td>{{ task.timeOfCare }}</td>
         <td>{{ task.priorityNumber }}</td>
+        <td>
+          <input type="checkbox" name="finishTask" @click="finishTask(task)" />
+        </td>
       </tr>
     </table>
     <table id="finishedTasks">
       <tr class="titleRow">
-        <td colspan="5">Finished tasks</td>
+        <td colspan="4">Finished tasks</td>
       </tr>
       <tr id="headers">
         <th>Palet number</th>
         <th>Plant</th>
         <th>Activity</th>
-        <th>Due</th>
-        <th>Priority</th>
+        <th>Realisation date</th>
       </tr>
-      <tr v-for="task in results" :key="task.dateOfPlanting">
+      <tr v-for="task in finishedTasks" :key="task.dateOfPlanting">
         <td>{{ task.paletNumber }}</td>
         <td>{{ task.paletPlantsTypeName || "not specified" }}</td>
         <td>{{ task.typeOfCareName }}</td>
-        <td>{{ task.timeOfCare }}</td>
-        <td>{{ task.priorityNumber }}</td>
+        <td>{{ task.realizationDate }}</td>
       </tr>
     </table>
   </div>
@@ -79,6 +84,7 @@ export default {
       results: [],
     };
   },
+  props: ["userId"],
   computed: {
     availableTasks: function () {
       return (this.results || [])
@@ -91,20 +97,23 @@ export default {
     },
     takenTasks: function () {
       return (this.results || [])
-        .filter((result) => result.userId == null)
+        .filter((result) => result.userId == -this.userId)
         .sort((a, b) => {
           if (a.priorityNumber > b.priorityNumber) return -1;
           if (a.priorityNumber < b.priorityNumber) return 1;
           return 0;
         });
     },
-    availableTasks: function () {
+    finishedTasks: function () {
       return (this.results || [])
-        .filter((result) => result.userId == null)
+        .filter(
+          (result) =>
+            result.userId == this.userId && result.realizationDate != null
+        )
         .sort((a, b) => {
-          if (a.priorityNumber > b.priorityNumber) return -1;
-          if (a.priorityNumber < b.priorityNumber) return 1;
-          return 0;
+          if (a.realizationDate > b.realizationDate) return -1;
+          if (a.realizationDate < b.realizationDate) return 1;
+          return 0; 
         });
     },
   },
@@ -114,6 +123,16 @@ export default {
         this.results = response.data;
       });
     },
+    takeTask(task) {
+      this.results[this.results.indexOf(task)].userId = -this.userId;
+      //TODO: CALL API AND UPDATE DB
+    },
+    finishTask(task) {
+      this.results[this.results.indexOf(task)].userId *= -1;
+      this.results[this.results.indexOf(task)].realizationDate = Date.now();
+      //TODO: CALL API AND UPDATE DB
+    },
+  
   },
   beforeMount() {
     this.getTasks();
@@ -133,7 +152,8 @@ export default {
 }
 
 .titleRow td {
-  background: #76b852;
+  background: #43a047;
+  color: #ffffff;
 }
 
 table {
