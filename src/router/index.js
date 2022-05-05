@@ -27,6 +27,7 @@ const routes = [
     path: '/tasks',
     name: 'tasks',
     component: Tasks,
+    props: true,
   },
   {
     path: '/account',

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div> 
       <SidebarMenu />
       <router-view/>
   </div>
@@ -12,5 +12,6 @@ export default {
   components: {
       SidebarMenu,
   },
+  props: ['userId']
 };
 </script>

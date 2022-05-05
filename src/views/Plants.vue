@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="plantsWrapper">
     <SidebarMenu />
     <ul>
       <li v-for="item in plants" :key="item.paletPlantsTypeId">
@@ -39,3 +39,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.plantsWrapper {
+  margin-left: 250px;
+}
+</style>

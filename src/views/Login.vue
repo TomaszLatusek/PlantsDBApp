@@ -2,6 +2,7 @@
   <div class="login-page">
     <div class="form">
       <form class="login-form">
+        <p v-if="invalidUsername">Invalid username</p>
         <input
           type="text"
           placeholder="username"
@@ -17,7 +18,6 @@
           @input="handleInput"
         />
         <button @click="validateForm">login</button>
-        <p v-if="invalidUsername">Invalid username</p>
       </form>
     </div>
   </div>
@@ -30,11 +30,11 @@ const API = "https://localhost:5001/api";
 axios.defaults.headers.common["accept"] = "text/json";
 
 export default {
-  name: 'login',
+  name: "login",
   data() {
     return {
-      usernameValue: '',
-      passwordValue: '',
+      usernameValue: "",
+      passwordValue: "",
       invalidUsername: false,
     };
   },
@@ -45,7 +45,10 @@ export default {
         .then((response) => {
           if (response.data >= 0) {
             console.log(`Welcome ${this.usernameValue}`);
-            this.$router.push({name: 'profile', params: {userId: response.data}});
+            this.$router.push({
+              name: "profile",
+              params: { userId: response.data },
+            });
           } else {
             this.invalidUsername = true;
           }
@@ -56,7 +59,7 @@ export default {
     },
     handleInput() {
       this.invalidUsername = false;
-    }
+    },
   },
 };
 </script>
@@ -65,15 +68,17 @@ export default {
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
 .login-page {
-  width: 360px;
+  width: 100%;
   padding: 8% 0 0;
   margin: auto;
+  height: 100vh;
+  background: #76b852;
 }
 .form {
   position: relative;
   z-index: 1;
-  background: #FFFFFF;
-  max-width: 360px;
+  background: #ffffff;
+  width: 270px;
   margin: 0 auto 100px;
   padding: 45px;
   text-align: center;
@@ -94,17 +99,19 @@ export default {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #4CAF50;
+  background: #4caf50;
   width: 100%;
   border: 0;
   padding: 15px;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 14px;
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   cursor: pointer;
 }
-.form button:hover,.form button:active,.form button:focus {
-  background: #43A047;
+.form button:hover,
+.form button:active,
+.form button:focus {
+  background: #43a047;
 }
 </style>
