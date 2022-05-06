@@ -2,7 +2,6 @@
   <div class="login-page">
     <div class="form">
       <form class="login-form">
-        <p v-if="invalidUsername">Invalid username</p>
         <input
           type="text"
           placeholder="username"
@@ -18,6 +17,11 @@
           @input="handleInput"
         />
         <button @click="validateForm">login</button>
+        <label
+          v-bind:class="invalidUsername ? 'invalid' : 'valid'"
+          align="left"
+          >Invalid credentials</label
+        >
       </form>
     </div>
   </div>
@@ -67,6 +71,10 @@ export default {
 <style scoped>
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
+* {
+  font-family: "Roboto", sans-serif;
+}
+
 .login-page {
   width: 100%;
   padding: 8% 0 0;
@@ -81,11 +89,11 @@ export default {
   width: 270px;
   margin: 0 auto 100px;
   padding: 45px;
+  padding-bottom: 26px;
   text-align: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  box-shadow: 2px 2px 4px rgb(60 60 59 / 15%);
 }
 .form input {
-  font-family: "Roboto", sans-serif;
   outline: 0;
   background: #f2f2f2;
   width: 100%;
@@ -96,7 +104,6 @@ export default {
   font-size: 14px;
 }
 .form button {
-  font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
   background: #4caf50;
@@ -109,6 +116,16 @@ export default {
   transition: all 0.3 ease;
   cursor: pointer;
 }
+
+.valid {
+  color: #ffffff;
+}
+
+.invalid {
+  color: red;
+  font-size: 12px;
+}
+
 .form button:hover,
 .form button:active,
 .form button:focus {

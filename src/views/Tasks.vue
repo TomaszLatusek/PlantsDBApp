@@ -13,9 +13,24 @@
           >Finished</a
         >
       </div>
-      <AvailableTasks v-if="tab == 1" :tasks="results" v-model:userId="userId" :dateFormat="dateFormat" />
-      <TakenTasks v-if="tab == 2" :tasks="results" v-model:userId="userId" :dateFormat="dateFormat" />
-      <FinishedTasks v-if="tab == 3" :tasks="results" :userId="userId" :dateFormat="dateFormat" />
+      <AvailableTasks
+        v-if="tab == 1"
+        :tasks="results"
+        v-model:userId="userId"
+        :dateFormat="dateFormat"
+      />
+      <TakenTasks
+        v-if="tab == 2"
+        :tasks="results"
+        v-model:userId="userId"
+        :dateFormat="dateFormat"
+      />
+      <FinishedTasks
+        v-if="tab == 3"
+        :tasks="results"
+        :userId="userId"
+        :dateFormat="dateFormat"
+      />
     </div>
   </div>
 </template>
@@ -51,7 +66,7 @@ export default {
     };
   },
   props: {
-    userId: Number,
+    userId: String,
   },
   methods: {
     getTasks() {
@@ -60,6 +75,10 @@ export default {
       });
     },
   },
+  // mounted() {
+  //   this.$session.set("userId", 2);
+  //   console.log(this.$session.get("userId"));
+  // },
   beforeMount() {
     this.getTasks();
   },
@@ -84,7 +103,7 @@ export default {
 .tasksWrapper {
   margin-left: 250px;
   height: 100vh;
-  background: #ECEFF1;
+  background: #eceff1;
 }
 
 #tableWrapper {
