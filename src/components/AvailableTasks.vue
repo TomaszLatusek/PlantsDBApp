@@ -6,7 +6,7 @@
       <th>Activity</th>
       <th>Due</th>
       <th>Priority</th>
-      <th>Take task</th>
+      <th>Action</th>
     </tr>
     <tr v-for="task in availableTasks" :key="task.dateOfPlanting">
       <td>{{ task.paletNumber }}</td>
@@ -17,7 +17,12 @@
       </td>
       <td>{{ task.priorityNumber }}</td>
       <td>
-        <input type="checkbox" name="takeTask" @click="takeTask(task)" />
+        <div class="dropdown">
+          <button @click="handleDropdown(task.dateOfPlanting)">></button>
+          <div :class="dropdown == task.dateOfPlanting ? 'active' : 'inactive'">
+            <a @click="takeTask(task)">take task</a>
+          </div>
+        </div>
       </td>
     </tr>
   </table>
@@ -30,6 +35,11 @@ export default {
     tasks: Array,
     userId: String,
     dateFormat: Object,
+  },
+  data() {
+    return {
+      dropdown: "",
+    };
   },
   computed: {
     availableTasks: function () {
@@ -46,6 +56,13 @@ export default {
     takeTask(task) {
       this.tasks[this.tasks.indexOf(task)].userId = -this.userId;
       //TODO: CALL API AND UPDATE DB
+    },
+    handleDropdown(key) {
+      if (key == this.dropdown) {
+        this.dropdown = "";
+      } else {
+        this.dropdown = key;
+      }
     },
   },
 };
@@ -104,8 +121,36 @@ input[type="checkbox"]:before {
 }
 
 input[type="checkbox"]:not(:disabled):hover:before {
-  /* background-color: #ECEFF1; */
   cursor: pointer;
   border-radius: 1px;
+}
+
+/* dropdown Actions */
+.dropdown {
+  display: block;
+  position: relative;
+}
+.inactive {
+  display: none;
+}
+
+.active {
+  z-index: 2;
+  position: absolute;
+  background: white;
+  box-shadow: 2px 2px 4px 2px rgb(60 60 59 / 15%);
+}
+
+.active a {
+  display: block;
+  position: relative;
+  color: #000000;
+  padding: 5px;
+  text-decoration: none;
+  font-size: 14px;
+}
+.active a:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>
