@@ -1,8 +1,12 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
+import VueSessionStorage from "vue-sessionstorage";
 
-createApp(App).use(router).mount('#app');
+// Vue.use(VueSessionStorage);
+// Vue.config.productionTip = false;
+
+createApp(App).use(router, VueSessionStorage).mount('#app');
 
 // new Vue({
 //     router,
